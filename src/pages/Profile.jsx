@@ -22,37 +22,37 @@ const Profile = () => {
       const tg = window.Telegram?.WebApp;
       
       console.log('--- Telegram WebApp Debug ---');
+      console.log('Current URL:', window.location.href);
       console.log('tg object exists:', !!tg);
+      
       if (tg) {
-        console.log('tg.initData:', tg.initData);
-        console.log('tg.initDataUnsafe:', JSON.stringify(tg.initDataUnsafe, null, 2));
         tg.ready();
         tg.expand();
-      }
-
-      // Check for user data
-      if (tg?.initDataUnsafe?.user) {
-        const userData = tg.initDataUnsafe.user;
-        console.log('Found User Data:', userData.first_name);
-        setUser({
-          firstName: userData.first_name || 'GreenWay User',
-          username: userData.username ? `@${userData.username}` : '',
-          photoUrl: userData.photo_url || null
-        });
-      } 
-      // Fallback
-      else {
-        console.log('No Telegram user data found, using Demo User');
-        setUser({
-          firstName: 'Demo User',
-          username: '@greenway_test',
-          photoUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop'
-        });
+        console.log('tg.initData:', tg.initData);
+        console.log('tg.initDataUnsafe:', JSON.stringify(tg.initDataUnsafe));
+        
+        if (tg.initDataUnsafe?.user) {
+          const userData = tg.initDataUnsafe.user;
+          setUser({
+            firstName: userData.first_name || 'GreenWay User',
+            username: userData.username ? `@${userData.username}` : '',
+            photoUrl: userData.photo_url || null
+          });
+          console.log('SUCCESS: User data loaded');
+        } else {
+          console.log('WARNING: No user data in initDataUnsafe');
+          // Still use demo for UI clarity if no data
+          setUser({
+            firstName: 'Demo User',
+            username: '@greenway_test',
+            photoUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop'
+          });
+        }
       }
     };
 
     loadUserData();
-    const timer = setTimeout(loadUserData, 1000); // 1 second delay for second check
+    const timer = setTimeout(loadUserData, 1000);
     return () => clearTimeout(timer);
   }, []);
 
