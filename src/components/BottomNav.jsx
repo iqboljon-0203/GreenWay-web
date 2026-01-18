@@ -1,12 +1,14 @@
 import { Home, ShoppingBag, ShoppingCart, Heart, User } from 'lucide-react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
 import './BottomNav.css';
 
 const BottomNav = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { cartCount } = useCart();
+  const { t } = useLanguage();
 
   const isActive = (path) => location.pathname === path;
 
@@ -18,7 +20,7 @@ const BottomNav = () => {
           onClick={() => navigate('/')}
         >
           <Home size={24} strokeWidth={isActive('/') ? 2.5 : 2} />
-          <span>Home</span>
+          <span>{t('home')}</span>
         </button>
         
         <button 
@@ -26,7 +28,7 @@ const BottomNav = () => {
           onClick={() => navigate('/history')}
         >
           <ShoppingBag size={24} strokeWidth={isActive('/history') ? 2.5 : 2} />
-          <span>Orders</span>
+          <span>{t('history')}</span>
         </button>
 
         <div className="nav-item-central-wrapper">
@@ -44,7 +46,7 @@ const BottomNav = () => {
           onClick={() => navigate('/saved')}
         >
           <Heart size={24} strokeWidth={isActive('/saved') ? 2.5 : 2} />
-          <span>Saved</span>
+          <span>{t('saved')}</span>
         </button>
 
         <button 
@@ -52,7 +54,7 @@ const BottomNav = () => {
           onClick={() => navigate('/profile')}
         >
           <User size={24} strokeWidth={isActive('/profile') ? 2.5 : 2} />
-          <span>Profile</span>
+          <span>{t('profile')}</span>
         </button>
       </div>
     </div>

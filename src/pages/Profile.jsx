@@ -1,12 +1,16 @@
 import { User, MapPin, Globe, Headphones, LogOut } from 'lucide-react';
 import BottomNav from '../components/BottomNav';
+import LanguageSelector from '../components/LanguageSelector';
+import { useLanguage, LANGUAGES } from '../context/LanguageContext';
 import './Profile.css';
 
 import { useEffect, useState } from 'react';
 
-
-
 const Profile = () => {
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const { lang, t } = useLanguage();
+  const currentLang = LANGUAGES.find(l => l.id === lang) || LANGUAGES[0];
+
   const [user, setUser] = useState({
     firstName: 'Guest',
     username: '',
@@ -14,20 +18,26 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    // Check if Telegram WebApp is available
-    if (window.Telegram?.WebApp) {
-      const tg = window.Telegram.WebApp;
+    const tg = window.Telegram?.WebApp;
+    
+    // Check if we are running inside Telegram
+    if (tg && tg.initDataUnsafe?.user) {
       tg.ready();
-      
-      const tgUser = tg.initDataUnsafe?.user;
-      
-      if (tgUser) {
-        setUser({
-          firstName: tgUser.first_name,
-          username: tgUser.username ? `@${tgUser.username}` : '',
-          photoUrl: tgUser.photo_url || null
-        });
-      }
+      tg.expand();
+      const tgUser = tg.initDataUnsafe.user;
+      setUser({
+        firstName: tgUser.first_name,
+        username: tgUser.username ? `@${tgUser.username}` : '',
+        photoUrl: tgUser.photo_url || null
+      });
+    } 
+    // For local development testing when not in Telegram
+    else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      setUser({
+        firstName: 'Test User',
+        username: '@greenway_test',
+        photoUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop'
+      });
     }
   }, []);
 
@@ -44,23 +54,20 @@ const Profile = () => {
       <div className="menu-list">
         <div className="menu-item">
           <div className="menu-icon"><MapPin size={20} /></div>
-          <span>My Addresses</span>
+          <span>{t('settings')}</span>
         </div>
-        <div className="menu-item">
+        <div className="menu-item" onClick={() => setIsLangOpen(true)}>
           <div className="menu-icon"><Globe size={20} /></div>
-          <span>Language (English)</span>
+          <span>{t('language')} ({currentLang.name})</span>
         </div>
         <div className="menu-item">
           <div className="menu-icon"><Headphones size={20} /></div>
-          <span>Support / Help</span>
-        </div>
-        <div className="menu-item text-danger">
-           {/* Can't really logout from Telegram WebApp but maybe clear session */}
-          <div className="menu-icon"><LogOut size={20} /></div>
-          <span>Log Out</span>
+          <span>Support</span>
         </div>
       </div>
       
+      <LanguageSelector isOpen={isLangOpen} onClose={() => setIsLangOpen(false)} />
+      <div className="bottom-spacer"></div>
       <BottomNav />
     </div>
   );

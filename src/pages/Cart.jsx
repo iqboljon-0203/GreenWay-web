@@ -1,11 +1,13 @@
 import { ArrowLeft, Trash2, Minus, Plus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { useLanguage } from '../context/LanguageContext';
 import './Cart.css';
 
 const Cart = () => {
   const navigate = useNavigate();
   const { cartItems, removeFromCart, updateQty, cartSubtotal } = useCart();
+  const { t } = useLanguage();
 
   const delivery = 2.00;
   const total = cartSubtotal + delivery;
@@ -16,14 +18,14 @@ const Cart = () => {
         <button className="icon-btn" onClick={() => navigate(-1)}>
           <ArrowLeft size={24} />
         </button>
-        <h1>My Cart</h1>
+        <h1>{t('cart')}</h1>
         <div style={{ width: 40 }} /> {/* Spacer */}
       </header>
       
       {cartItems.length === 0 ? (
         <div className="empty-cart">
-          <p>Your cart is empty</p>
-          <button className="btn btn-primary" onClick={() => navigate('/')}>Start Shopping</button>
+          <p>{t('noResults')}</p>
+          <button className="btn btn-primary" onClick={() => navigate('/')}>{t('orderNow')}</button>
         </div>
       ) : (
         <>
@@ -31,10 +33,10 @@ const Cart = () => {
             {cartItems.map(item => (
               <div key={item.id} className="cart-item">
                 <div className="cart-img">
-                  <img src={item.image} alt={item.name} />
+                  <img src={item.image} alt={t(item.nameKey)} />
                 </div>
                 <div className="cart-item-info">
-                  <h3>{item.name}</h3>
+                  <h3>{t(item.nameKey)}</h3>
                   <div className="cart-controls">
                     <span className="item-price">${item.price.toFixed(2)}</span>
                     <div className="qty-control-sm">
@@ -62,12 +64,12 @@ const Cart = () => {
             </div>
             <div className="divider"></div>
             <div className="summary-row total">
-              <span>Total</span>
+              <span>{t('total')}</span>
               <span>${total.toFixed(2)}</span>
             </div>
             
             <button className="btn btn-primary w-full mt-4" onClick={() => navigate('/checkout')}>
-               Proceed to Checkout
+               {t('checkout')}
             </button>
           </div>
         </>

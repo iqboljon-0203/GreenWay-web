@@ -15,9 +15,7 @@ import Saved from './pages/Saved';
 import { CartProvider } from './context/CartContext';
 import { SavedProvider } from './context/SavedContext';
 import { OrderProvider } from './context/OrderContext';
-
-
-
+import { LanguageProvider } from './context/LanguageContext';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -29,33 +27,31 @@ function ScrollToTop() {
 
 function App() {
   return (
-    // Base path might need adjustment if deployed under subpath, but for now / is fine
-    <SavedProvider>
-      <CartProvider>
-        <OrderProvider>
-          <Router>
-            <ScrollToTop />
-            <div className="app-container">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/category/:slug" element={<Category />} />
-                <Route path="/product/:id" element={<ProductDetail />} />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/checkout" element={<Checkout />} />
-                <Route path="/order-confirmation" element={<OrderConfirmation />} />
-                <Route path="/order/:id" element={<OrderTracking />} />
-                <Route path="/history" element={<OrderHistory />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/saved" element={<Saved />} />
-              </Routes>
-            </div>
-          </Router>
-        </OrderProvider>
-      </CartProvider>
-    </SavedProvider>
-
-
-
+    <LanguageProvider>
+      <SavedProvider>
+        <CartProvider>
+          <OrderProvider>
+            <Router>
+              <ScrollToTop />
+              <div className="app-container">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/category/:slug" element={<Category />} />
+                  <Route path="/product/:id" element={<ProductDetail />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/checkout" element={<Checkout />} />
+                  <Route path="/order-confirmation" element={<OrderConfirmation />} />
+                  <Route path="/order/:id" element={<OrderTracking />} />
+                  <Route path="/history" element={<OrderHistory />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/saved" element={<Saved />} />
+                </Routes>
+              </div>
+            </Router>
+          </OrderProvider>
+        </CartProvider>
+      </SavedProvider>
+    </LanguageProvider>
   );
 }
 

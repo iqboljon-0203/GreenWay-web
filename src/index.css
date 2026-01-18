@@ -74,7 +74,8 @@ body {
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   /* Mobile optimization */
-  overscroll-behavior-y: none;
+  overflow-x: hidden;
+  overscroll-behavior-y: auto;
 }
 
 #root {
@@ -86,6 +87,7 @@ body {
   display: flex;
   flex-direction: column;
   box-shadow: 0 0 50px rgba(0,0,0,0.1);
+  overflow-x: hidden;
 }
 
 /* Typography */

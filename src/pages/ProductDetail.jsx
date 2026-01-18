@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { useSaved } from '../context/SavedContext';
 import { ArrowLeft, Minus, Plus, Heart, MapPin, Clock, Star } from 'lucide-react';
-
+import { useLanguage } from '../context/LanguageContext';
+import { PRODUCTS } from '../data/products';
 import './ProductDetail.css';
 
 
@@ -13,22 +14,19 @@ const ProductDetail = () => {
   const { addToCart } = useCart();
   const { toggleSave, isProductSaved } = useSaved();
   const [quantity, setQuantity] = useState(1);
+  const { t } = useLanguage();
 
-  
-  // Mock Product Data
-  const product = {
-    id: parseInt(id),
-    name: 'Organic Spinach',
-    price: 2.50,
-    unit: 'bundle',
-    description: 'Fresh organic spinach harvested locally. Rich in iron and vitamins. Perfect for salads and smoothies.',
-    image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=800&h=600&fit=crop',
-    rating: 4.8,
-    reviews: 124,
-    source: 'Green Valley Farm',
-    harvestTime: 'Today, 6:00 AM',
-    calories: '23 kcal/100g'
-  };
+  // Find product by ID
+  const product = PRODUCTS.find(p => p.id === parseInt(id));
+
+  if (!product) {
+    return (
+      <div className="page-container flex-center">
+        <p>Product not found</p>
+        <button onClick={() => navigate(-1)} className="btn btn-primary">Go Back</button>
+      </div>
+    );
+  }
 
   const increment = () => setQuantity(q => q + 1);
   const decrement = () => setQuantity(q => Math.max(1, q - 1));
@@ -55,12 +53,12 @@ const ProductDetail = () => {
 
 
       <div className="product-image-large">
-        <img src={product.image} alt={product.name} />
+        <img src={product.image} alt={product.nameKey ? t(product.nameKey) : product.name} />
       </div>
 
       <div className="detail-content">
         <div className="title-row">
-          <h1>{product.name}</h1>
+          <h1>{product.nameKey ? t(product.nameKey) : product.name}</h1>
           <div className="rating-badge">
             <Star size={14} fill="#F59E0B" stroke="none" />
             <span>{product.rating}</span>
@@ -69,29 +67,29 @@ const ProductDetail = () => {
 
         <div className="price-info">
           <span className="current-price">${product.price.toFixed(2)}</span>
-          <span className="per-unit"> / {product.unit}</span>
+          <span className="per-unit"> / {product.unitKey ? t(product.unitKey) : product.unit}</span>
         </div>
 
         <div className="info-cards">
           <div className="info-card">
             <MapPin size={18} className="text-primary" />
             <div>
-              <span className="label">Source</span>
+              <span className="label">{t('source')}</span>
               <span className="value">{product.source}</span>
             </div>
           </div>
           <div className="info-card">
             <Clock size={18} className="text-primary" />
             <div>
-              <span className="label">Harvested</span>
+              <span className="label">{t('harvested')}</span>
               <span className="value">{product.harvestTime}</span>
             </div>
           </div>
         </div>
 
         <div className="description">
-          <h3>Description</h3>
-          <p>{product.description}</p>
+          <h3>{t('description')}</h3>
+          <p>{product.descriptionKey ? t(product.descriptionKey) : product.description}</p>
         </div>
       </div>
 
@@ -103,7 +101,7 @@ const ProductDetail = () => {
         </div>
         
         <button className="btn btn-primary add-to-cart-btn" onClick={handleAddToCart}>
-          <span>Add to Cart</span>
+          <span>{t('addToCart')}</span>
           <span className="btn-separator">|</span>
           <span>${(product.price * quantity).toFixed(2)}</span>
         </button>

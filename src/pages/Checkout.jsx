@@ -2,12 +2,14 @@ import { ArrowLeft, MapPin, Clock, CreditCard, ChevronRight } from 'lucide-react
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useOrders } from '../context/OrderContext';
+import { useLanguage } from '../context/LanguageContext';
 import './Checkout.css';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { cartItems, cartSubtotal, clearCart } = useCart();
   const { addOrder } = useOrders();
+  const { t } = useLanguage();
 
   const delivery = 2.00;
   const total = cartSubtotal + delivery;
@@ -32,7 +34,7 @@ const Checkout = () => {
         <button className="icon-btn" onClick={() => navigate(-1)}>
           <ArrowLeft size={24} />
         </button>
-        <h1>Checkout</h1>
+        <h1>{t('checkout')}</h1>
         <div style={{ width: 40 }} />
       </header>
 
@@ -73,7 +75,7 @@ const Checkout = () => {
       </div>
 
       <div className="section">
-        <h2>Order Summary</h2>
+        <h2>{t('featured') === 'Featured Fresh' ? 'Order Summary' : (t('featured') === 'Saralangan mahsulotlar' ? 'Buyurtma xulosasi' : 'Order Summary')}</h2>
         <div className="summary-card">
           <div className="row">
             <span>Items ({cartItems.length})</span>
@@ -96,7 +98,7 @@ const Checkout = () => {
         onClick={handleConfirmOrder}
         disabled={cartItems.length === 0}
       >
-        Confirm Order
+        {t('orderNow')}
       </button>
     </div>
   );

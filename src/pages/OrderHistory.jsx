@@ -2,16 +2,18 @@ import { ArrowLeft, Clock, ShoppingBag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import { useOrders } from '../context/OrderContext';
+import { useLanguage } from '../context/LanguageContext';
 import './OrderHistory.css';
 
 const OrderHistory = () => {
   const navigate = useNavigate();
   const { orders } = useOrders();
+  const { t } = useLanguage();
 
   return (
     <div className="page-container history-page">
       <header className="history-header">
-        <h1>My Orders</h1>
+        <h1>{t('history')}</h1>
       </header>
 
       {orders.length === 0 ? (
@@ -19,10 +21,10 @@ const OrderHistory = () => {
           <div className="empty-icon-circle">
             <ShoppingBag size={48} />
           </div>
-          <h2>No orders yet</h2>
-          <p>Your order history is empty. Start shopping to see your orders here!</p>
+          <h2>{t('noResults')}</h2>
+          <p>{t('history')} {t('noResults').toLowerCase()}</p>
           <button className="btn btn-primary" onClick={() => navigate('/')}>
-            Explore Products
+             {t('orderNow')}
           </button>
         </div>
       ) : (
@@ -48,6 +50,7 @@ const OrderHistory = () => {
         </div>
       )}
       
+      <div className="bottom-spacer"></div>
       <BottomNav />
     </div>
   );

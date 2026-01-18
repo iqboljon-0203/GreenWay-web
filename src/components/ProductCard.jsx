@@ -2,12 +2,14 @@ import { Plus, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { useSaved } from '../context/SavedContext';
+import { useLanguage } from '../context/LanguageContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product, onClick }) => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { toggleSave, isProductSaved } = useSaved();
+  const { t } = useLanguage();
 
   const saved = isProductSaved(product.id);
 
@@ -27,8 +29,8 @@ const ProductCard = ({ product, onClick }) => {
         </button>
       </div>
       <div className="product-info">
-        <h3>{product.name}</h3>
-        <p className="unit">1 {product.unit}</p>
+        <h3>{product.nameKey ? t(product.nameKey) : product.name}</h3>
+        <p className="unit">1 {product.unitKey ? t(product.unitKey) : product.unit}</p>
         <div className="price-row">
           <span className="price">${product.price.toFixed(2)}</span>
           <button 

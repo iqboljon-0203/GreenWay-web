@@ -1,7 +1,7 @@
 /* Page Container */
 .page-container {
   padding: 16px;
-  padding-top: 12px;
+  padding-top: 0; /* Header handles its own spacing */
   background-color: var(--bg-color);
   min-height: 100vh;
 }
@@ -11,7 +11,41 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin: 0 -16px 24px -16px; /* Offset container padding and add space below */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.lang-btn {
+  background: #f3f4f6;
+  border: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111827;
+  transition: all 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.lang-btn:active {
+  background: #e5e7eb;
+  transform: scale(0.95);
 }
 
 .brand {
@@ -72,13 +106,13 @@
 .search-bar {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   background-color: white;
-  padding: 14px 18px;
-  border-radius: 18px;
-  box-shadow: var(--shadow-sm);
-  border: 1px solid transparent;
-  transition: border-color 0.2s;
+  padding: 16px 24px;
+  border-radius: 100px;
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.02);
+  transition: all 0.3s ease;
 }
 
 .search-bar:focus-within {

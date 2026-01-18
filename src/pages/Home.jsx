@@ -1,9 +1,12 @@
-import { useState } from 'react';
-import { Search, Bell, SlidersHorizontal, Leaf, Apple, Loader2, ShoppingBag } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Search, Bell, SlidersHorizontal, ShoppingBag } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import BottomNav from '../components/BottomNav';
 import ProductCard from '../components/ProductCard';
+import LanguageSelector from '../components/LanguageSelector';
+import { useLanguage, LANGUAGES } from '../context/LanguageContext';
 import './Home.css';
+import { PRODUCTS } from '../data/products';
 
 // Mock Data
 const CATEGORIES = [
@@ -12,19 +15,23 @@ const CATEGORIES = [
   { id: 'greens', name: 'Greens', icon: '🥬', color: '#ECFDF5' },
 ];
 
-const FEATURED = [
-  { id: 1, name: 'Organic Spinach', price: 2.50, unit: 'bundle', image: 'https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=300&fit=crop', isNew: true },
-  { id: 2, name: 'Red Bell Peppers', price: 4.20, unit: 'kg', image: 'https://images.unsplash.com/photo-1599313426214-72b12cfaca83?w=400&h=300&fit=crop' },
-  { id: 3, name: 'Fresh Broccoli', price: 3.15, unit: 'head', image: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bef?w=400&h=300&fit=crop' },
-  { id: 4, name: 'Sweet Carrots', price: 1.80, unit: 'kg', image: 'https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=400&h=300&fit=crop', discount: '-10%' },
-];
+const FEATURED = PRODUCTS.slice(0, 4);
 
 const Home = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const productsRef = useRef(null);
+  const { lang, t } = useLanguage();
 
-  const filteredProducts = FEATURED.filter(product => 
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const currentLang = LANGUAGES.find(l => l.id === lang) || LANGUAGES[0];
+
+  const scrollToProducts = () => {
+    productsRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const filteredProducts = (searchTerm ? PRODUCTS : FEATURED).filter(product => 
+    t(product.nameKey || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -35,11 +42,18 @@ const Home = () => {
           <img src="/greenway_logo.png" alt="GreenWay Logo" className="home-logo-img" />
           <h1>GreenWay</h1>
         </div>
-        <button className="icon-btn">
-          <Bell size={24} />
-          <span className="dot"></span>
-        </button>
+        <div className="header-actions">
+          <button className="lang-btn" onClick={() => setIsLangOpen(true)}>
+             <span className="current-code">{currentLang.code}</span>
+          </button>
+          <button className="icon-btn">
+            <Bell size={24} />
+            <span className="dot"></span>
+          </button>
+        </div>
       </header>
+
+      <LanguageSelector isOpen={isLangOpen} onClose={() => setIsLangOpen(false)} />
 
 
       {/* Search */}
@@ -48,7 +62,7 @@ const Home = () => {
           <Search size={20} className="search-icon" />
           <input 
             type="text" 
-            placeholder="Search for fresh food..." 
+            placeholder={t('search')} 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -59,14 +73,14 @@ const Home = () => {
       {!searchTerm && (
         <section className="categories-section">
           <div className="section-header">
-            <h2>Categories</h2>
-            <button className="see-all">See all</button>
+            <h2>{t('categories')}</h2>
+            <button className="see-all">{t('seeAll')}</button>
           </div>
           <div className="categories-grid">
             {CATEGORIES.map(cat => (
               <div key={cat.id} className="category-card" style={{ backgroundColor: cat.color }} onClick={() => navigate(`/category/${cat.id}`)}>
                 <div className="cat-icon-bg">{cat.icon}</div>
-                <span>{cat.name}</span>
+                <span>{t(`cat_${cat.id}`)}</span>
               </div>
             ))}
             <div className="category-card spacer"></div>
@@ -79,9 +93,9 @@ const Home = () => {
         <section className="banner-section">
           <div className="banner">
             <div className="banner-content">
-              <span className="badge">Free Delivery</span>
-              <h2>Organic food delivered to your home</h2>
-              <button className="btn-white">Order Now</button>
+              <span className="badge">{t('freeDelivery')}</span>
+              <h2>{t('bannerText')}</h2>
+              <button className="btn-white" onClick={scrollToProducts}>{t('orderNow')}</button>
             </div>
             {/* Illustration */}
             <div className="banner-bg-icon">
@@ -92,9 +106,9 @@ const Home = () => {
       )}
 
       {/* Featured / Search Results */}
-      <section className="products-section">
+      <section className="products-section" ref={productsRef}>
         <div className="section-header">
-          <h2>{searchTerm ? 'Search Results' : 'Featured Fresh'}</h2>
+          <h2>{searchTerm ? (t('noResults') === 'Mahsulot topilmadi' ? 'Qidiruv natijalari' : (t('noResults') === 'Ничего не найдено' ? 'Результаты поиска' : 'Search Results')) : t('featured')}</h2>
           <button className="filter-btn"><SlidersHorizontal size={18} /></button>
         </div>
         
@@ -110,7 +124,7 @@ const Home = () => {
           </div>
         ) : (
           <div className="no-results">
-            <p>No products found for "{searchTerm}"</p>
+            <p>{t('noResults')}</p>
           </div>
         )}
       </section>
