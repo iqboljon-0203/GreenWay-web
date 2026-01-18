@@ -20,19 +20,37 @@ const Profile = () => {
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
     
-    // Check if we are running inside Telegram
-    if (tg && tg.initDataUnsafe?.user) {
-      tg.ready();
-      tg.expand();
-      const tgUser = tg.initDataUnsafe.user;
-      setUser({
-        firstName: tgUser.first_name,
-        username: tgUser.username ? `@${tgUser.username}` : '',
-        photoUrl: tgUser.photo_url || null
-      });
-    } 
-    // For local development testing when not in Telegram
-    else if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+    const initApp = () => {
+      if (tg) {
+        tg.ready();
+        tg.expand();
+        
+        const tgUser = tg.initDataUnsafe?.user;
+        if (tgUser) {
+          setUser({
+            firstName: tgUser.first_name || 'GreenWay User',
+            username: tgUser.username ? `@${tgUser.username}` : (tgUser.last_name || ''),
+            photoUrl: tgUser.photo_url || null
+          });
+          return true;
+        }
+      }
+      return false;
+    };
+
+    // Try to initialize immediately
+    const success = initApp();
+
+    // If failed (maybe TG not ready), try again after short delay
+    if (!success) {
+      const timer = setTimeout(() => {
+        initApp();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+
+    // Local development fallback
+    if (!success && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
       setUser({
         firstName: 'Test User',
         username: '@greenway_test',
