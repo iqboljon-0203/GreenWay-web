@@ -21,8 +21,11 @@ const Profile = () => {
     const loadUserData = () => {
       const tg = window.Telegram?.WebApp;
       
-      // Attempt to initialize and expand
+      console.log('--- Telegram WebApp Debug ---');
+      console.log('tg object exists:', !!tg);
       if (tg) {
+        console.log('tg.initData:', tg.initData);
+        console.log('tg.initDataUnsafe:', JSON.stringify(tg.initDataUnsafe, null, 2));
         tg.ready();
         tg.expand();
       }
@@ -30,15 +33,16 @@ const Profile = () => {
       // Check for user data
       if (tg?.initDataUnsafe?.user) {
         const userData = tg.initDataUnsafe.user;
+        console.log('Found User Data:', userData.first_name);
         setUser({
           firstName: userData.first_name || 'GreenWay User',
           username: userData.username ? `@${userData.username}` : '',
           photoUrl: userData.photo_url || null
         });
-        console.log('Telegram User Data Loaded');
       } 
       // Fallback
       else {
+        console.log('No Telegram user data found, using Demo User');
         setUser({
           firstName: 'Demo User',
           username: '@greenway_test',
@@ -48,8 +52,7 @@ const Profile = () => {
     };
 
     loadUserData();
-    // Second attempt after half a second to catch late initialization
-    const timer = setTimeout(loadUserData, 500);
+    const timer = setTimeout(loadUserData, 1000); // 1 second delay for second check
     return () => clearTimeout(timer);
   }, []);
 
