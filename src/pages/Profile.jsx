@@ -18,10 +18,16 @@ const Profile = () => {
   });
 
   useEffect(() => {
-    const tg = window.Telegram?.WebApp;
-    
     const loadUserData = () => {
-      // If we are inside Telegram and user data is available
+      const tg = window.Telegram?.WebApp;
+      
+      // Attempt to initialize and expand
+      if (tg) {
+        tg.ready();
+        tg.expand();
+      }
+
+      // Check for user data
       if (tg?.initDataUnsafe?.user) {
         const userData = tg.initDataUnsafe.user;
         setUser({
@@ -29,10 +35,9 @@ const Profile = () => {
           username: userData.username ? `@${userData.username}` : '',
           photoUrl: userData.photo_url || null
         });
-        tg.ready();
-        tg.expand();
+        console.log('Telegram User Data Loaded');
       } 
-      // Fallback for all other cases (browsers, Vercel preview, etc.)
+      // Fallback
       else {
         setUser({
           firstName: 'Demo User',
@@ -42,10 +47,8 @@ const Profile = () => {
       }
     };
 
-    // Initial load
     loadUserData();
-
-    // Sometimes Telegram takes a split second to populate initDataUnsafe
+    // Second attempt after half a second to catch late initialization
     const timer = setTimeout(loadUserData, 500);
     return () => clearTimeout(timer);
   }, []);

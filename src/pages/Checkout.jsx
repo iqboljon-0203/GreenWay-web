@@ -25,7 +25,7 @@ const Checkout = () => {
     });
 
     clearCart();
-    navigate(`/order/${newOrder.id}`);
+    navigate(`/order-confirmation/${newOrder.id}`);
   };
 
   return (
