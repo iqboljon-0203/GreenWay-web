@@ -20,43 +20,34 @@ const Profile = () => {
   useEffect(() => {
     const tg = window.Telegram?.WebApp;
     
-    const initApp = () => {
-      if (tg) {
+    const loadUserData = () => {
+      // If we are inside Telegram and user data is available
+      if (tg?.initDataUnsafe?.user) {
+        const userData = tg.initDataUnsafe.user;
+        setUser({
+          firstName: userData.first_name || 'GreenWay User',
+          username: userData.username ? `@${userData.username}` : '',
+          photoUrl: userData.photo_url || null
+        });
         tg.ready();
         tg.expand();
-        
-        const tgUser = tg.initDataUnsafe?.user;
-        if (tgUser) {
-          setUser({
-            firstName: tgUser.first_name || 'GreenWay User',
-            username: tgUser.username ? `@${tgUser.username}` : (tgUser.last_name || ''),
-            photoUrl: tgUser.photo_url || null
-          });
-          return true;
-        }
+      } 
+      // Fallback for all other cases (browsers, Vercel preview, etc.)
+      else {
+        setUser({
+          firstName: 'Demo User',
+          username: '@greenway_test',
+          photoUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop'
+        });
       }
-      return false;
     };
 
-    // Try to initialize immediately
-    const success = initApp();
+    // Initial load
+    loadUserData();
 
-    // If failed (maybe TG not ready), try again after short delay
-    if (!success) {
-      const timer = setTimeout(() => {
-        initApp();
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-
-    // Local development fallback
-    if (!success && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
-      setUser({
-        firstName: 'Test User',
-        username: '@greenway_test',
-        photoUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop'
-      });
-    }
+    // Sometimes Telegram takes a split second to populate initDataUnsafe
+    const timer = setTimeout(loadUserData, 500);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
