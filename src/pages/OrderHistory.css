@@ -1,0 +1,148 @@
+/* Header */
+.history-header {
+  margin-bottom: 24px;
+}
+
+.history-header h1 {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: -0.5px;
+}
+
+/* List */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-bottom: 100px;
+}
+
+.order-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background-color: white;
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px -2px rgba(0,0,0,0.05); /* very soft */
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.order-card:active {
+  transform: scale(0.99);
+}
+
+.order-icon {
+  width: 50px;
+  height: 50px;
+  background-color: #F8FAFC;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  border: 1px solid #F1F5F9;
+}
+
+.order-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.order-info h3 {
+  font-size: 16px;
+  margin: 0;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.order-info p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.order-status-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.order-price {
+  font-weight: 800;
+  color: var(--text-main);
+  font-size: 16px;
+}
+
+/* Badges */
+.status-badge {
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-badge.in-progress {
+  background-color: #EFF6FF; /* Blue 50 */
+  color: #2563EB; /* Blue 600 */
+}
+
+.status-badge.completed {
+  background-color: #DCFCE7; /* Green 100 */
+  color: #16A34A; /* Green 600 */
+}
+
+.status-badge.cancelled {
+  background-color: #FEF2F2;
+  color: #DC2626;
+}
+
+/* Empty State */
+.empty-history {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  text-align: center;
+}
+
+.empty-icon-circle {
+  width: 100px;
+  height: 100px;
+  background-color: #F8FAFC;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.empty-history h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.empty-history p {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 32px;
+}
+
+.order-items-count {
+  font-size: 12px !important;
+  color: var(--primary) !important;
+  font-weight: 700 !important;
+}
+

@@ -1,0 +1,49 @@
+.confirmation-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100vh;
+}
+
+.confirmation-content {
+  width: 100%;
+}
+
+.success-icon {
+  color: var(--primary);
+  margin-bottom: 24px;
+}
+
+.confirmation-content h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.confirmation-content p {
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+}
+
+.order-details-card {
+  background-color: #F0FDF4;
+  padding: 24px;
+  border-radius: var(--radius-md);
+  margin-bottom: 32px;
+}
+
+.order-details-card p {
+  margin: 0;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.order-details-card h3 {
+  color: var(--primary);
+  font-size: 18px;
+}
+
+.btn-text {
+  color: var(--text-secondary);
+  font-weight: 500;
+}

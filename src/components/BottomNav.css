@@ -1,0 +1,94 @@
+/* Container to hold the floating button properly */
+.bottom-nav-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  pointer-events: none; /* Let clicks pass through the container, but catch on nav */
+}
+
+.bottom-nav {
+  pointer-events: auto;
+  height: var(--bottom-nav-height);
+  background-color: var(--card-bg);
+  display: flex;
+  justify-content: space-between; /* Space out items */
+  align-items: center;
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+  padding: 0 16px;
+  padding-bottom: env(safe-area-inset-bottom);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px; /* Slight curve at top corners of the bar itself */
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  color: #94A3B8; /* Slate 400 */
+  background: none;
+  border: none;
+  padding: 8px;
+  flex: 1;
+  transition: all 0.2s ease;
+}
+
+.nav-item.active {
+  color: var(--primary);
+  /* Optional: slightly move up */
+  transform: translateY(-2px);
+}
+
+.nav-item span {
+  font-size: 10px;
+  font-weight: 500;
+}
+
+/* Central Floating Button */
+.nav-item-central-wrapper {
+  position: relative;
+  width: 70px; /* Space reserved in the bar */
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-item-central {
+  position: absolute;
+  top: -25px; /* Float above */
+  width: 64px;
+  height: 64px;
+  background-color: var(--primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(34, 197, 94, 0.4);
+  border: 4px solid var(--bg-color); /* Matches body bg to create 'cutout' effect */
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.nav-item-central:active {
+  transform: scale(0.95);
+}
+
+.cart-badge-dot {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: var(--error);
+  color: white;
+  font-size: 11px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}

@@ -1,0 +1,126 @@
+.product-card {
+  background-color: var(--card-bg);
+  border-radius: 20px;
+  padding: 12px;
+  /* box-shadow: var(--shadow-sm); */ /* Actually design looks very flat/clean, maybe no shadow or very subtle */
+  box-shadow: 0 10px 20px -5px rgba(0,0,0,0.03);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  border: 1px solid transparent;
+}
+
+.product-card:active {
+  transform: scale(0.98);
+}
+
+.product-img-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 90%; /* Slightly taller */
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #F8FAFC;
+}
+
+.save-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 32px;
+  height: 32px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  box-shadow: var(--shadow-sm);
+  color: #94A3B8;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.save-btn.active {
+  color: #EF4444;
+}
+
+.save-btn:active {
+  transform: scale(0.9);
+}
+
+
+.product-img-container img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Cover usually looks better for fresh food */
+}
+
+.discount-tag {
+  position: absolute;
+  bottom: 8px; /* Move to bottom left of image like in design 2? No, design 2 has top left red tag */
+  left: 8px;
+  top: auto;
+  background-color: var(--error);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 8px;
+  border-radius: 20px;
+}
+
+.product-info h3 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.3px;
+}
+
+.unit {
+  font-size: 13px;
+  color: #94A3B8;
+  font-weight: 500;
+  margin-top: -2px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.price {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.add-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.2);
+}
+
+.add-btn:active {
+  transform: scale(0.9);
+  background-color: var(--primary-dark);
+}
