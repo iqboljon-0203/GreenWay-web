@@ -12,6 +12,7 @@ const Profile = () => {
   const currentLang = LANGUAGES.find(l => l.id === lang) || LANGUAGES[0];
 
   const [user, setUser] = useState({
+    id: null,
     firstName: 'Guest',
     username: '',
     photoUrl: null
@@ -33,12 +34,16 @@ const Profile = () => {
         
         if (tg.initDataUnsafe?.user) {
           const userData = tg.initDataUnsafe.user;
+          // Fallback to t.me userpic if photo_url is missing
+          const photo = userData.photo_url || (userData.username ? `https://t.me/i/userpic/320/${userData.username}.jpg` : null);
+          
           setUser({
+            id: userData.id,
             firstName: userData.first_name || 'GreenWay User',
             username: userData.username ? `@${userData.username}` : '',
-            photoUrl: userData.photo_url || null
+            photoUrl: photo
           });
-          console.log('SUCCESS: User data loaded');
+          console.log('SUCCESS: User data loaded', { ...userData, photo_url_derived: photo });
         } else {
           console.log('WARNING: No user data in initDataUnsafe');
           // Still use demo for UI clarity if no data
@@ -48,6 +53,14 @@ const Profile = () => {
             photoUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop'
           });
         }
+      } else {
+        console.log('NOT IN TELEGRAM: Using demo user data');
+        setUser({
+          id: 'demo',
+          firstName: 'Demo User',
+          username: '@greenway_test',
+          photoUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=100&auto=format&fit=crop'
+        });
       }
     };
 
@@ -60,7 +73,19 @@ const Profile = () => {
     <div className="page-container profile-page">
       <div className="profile-header">
         <div className="profile-photo">
-          {user.photoUrl ? <img src={user.photoUrl} alt="Profile" /> : <User size={40} />}
+          {user.photoUrl ? (
+            <img 
+              src={user.photoUrl} 
+              alt="Profile" 
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.style.display = 'none';
+                setUser(prev => ({ ...prev, photoUrl: null }));
+              }}
+            />
+          ) : (
+            <User size={40} />
+          )}
         </div>
         <h2>{user.firstName}</h2>
         <p>{user.username}</p>
