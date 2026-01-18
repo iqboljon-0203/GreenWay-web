@@ -25,6 +25,7 @@ const OrderTracking = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const { getOrderById } = useOrders();
+  const { t } = useLanguage();
 
   const order = getOrderById(id);
 
@@ -39,22 +40,21 @@ const OrderTracking = () => {
            <button className="icon-btn" onClick={() => navigate('/')}>
              <ArrowLeft size={24} />
            </button>
-           <h1>Order Review</h1>
+           <h1>{t('history')}</h1>
          </header>
          <div className="empty-history" style={{ marginTop: '100px' }}>
-           <h2>Order Not Found</h2>
-           <p>The order you are looking for does not exist or has been removed.</p>
-           <button className="btn btn-primary" onClick={() => navigate('/')}>Back Home</button>
+           <h2>{t('noResults')}</h2>
+           <button className="btn btn-primary" onClick={() => navigate('/')}>{t('home')}</button>
          </div>
       </div>
     );
   }
 
   const STEPS = [
-    { title: 'Order Accepted', time: '10:30', completed: true },
-    { title: 'Preparing', time: '10:35', completed: true },
-    { title: 'On the way', time: '10:50', completed: true, active: true },
-    { title: 'Delivered', time: 'Est 11:10', completed: false },
+    { title: t('home') === 'Home' ? 'Order Accepted' : (t('home') === 'Asosiy' ? 'Buyurtma qabul qilindi' : 'Order Accepted'), time: '10:30', completed: true },
+    { title: t('home') === 'Home' ? 'Preparing' : (t('home') === 'Asosiy' ? 'Tayyorlanmoqda' : 'Preparing'), time: '10:35', completed: true },
+    { title: t('home') === 'Home' ? 'On the way' : (t('home') === 'Asosiy' ? 'Yo’lda' : 'On the way'), time: '10:50', completed: true, active: true },
+    { title: t('home') === 'Home' ? 'Delivered' : (t('home') === 'Asosiy' ? 'Yetkazildi' : 'Delivered'), time: 'Est 11:10', completed: false },
   ];
 
   return (
@@ -64,7 +64,7 @@ const OrderTracking = () => {
           <ArrowLeft size={24} />
         </button>
         <div className="header-order-badge">
-          Order #{order.id}
+          {t('history')} #{order.id}
         </div>
         <div style={{ width: 44 }}></div>
       </header>
